@@ -42,11 +42,9 @@
 ### 1. Скачиваем проект
 
 ```bash
-git clone <ССЫЛКА_НА_РЕПОЗИТОРИЙ>
-cd nash-dom
+git clone https://github.com/p0kt1e/nash-dom-open-source.git
+cd nash-dom-open-source
 ```
-
-Ссылку добавлю после публикации репозитория
 
 ### 2. Создаём Telegram-бота
 
@@ -100,7 +98,30 @@ cp worker/.dev.vars.example worker/.dev.vars
 - `TELEGRAM_ALLOWED_IDS` - Telegram ID пользователей, которым разрешён доступ
 - `FRONTEND_ORIGIN` - адрес интерфейса
 
-Для опубликованного Worker эти переменные нужно настроить отдельно в Cloudflare
+Для опубликованного Worker настройте переменные:
+
+```bash
+cd worker
+npx wrangler secret put TELEGRAM_BOT_TOKEN
+npx wrangler secret put TELEGRAM_ALLOWED_IDS
+npx wrangler secret put FRONTEND_ORIGIN
+```
+
+Каждая команда попросит ввести значение. Токен и другие настройки не нужно записывать в код
+
+После настройки опубликуйте Worker:
+
+```bash
+npx wrangler deploy
+```
+
+Cloudflare покажет адрес Worker. Сохраните его для настройки интерфейса
+
+Вернитесь в корень проекта:
+
+```bash
+cd ..
+```
 
 Токены, личные настройки и резервные копии базы не должны попадать в Git
 
@@ -126,15 +147,40 @@ npm run dev
 
 Для работы с Telegram Mini App понадобится опубликованный HTTPS-адрес интерфейса
 
-### 6. Публикуем приложение
+### 6. Публикуем интерфейс
 
-Серверную часть можно развернуть через Cloudflare Workers, а интерфейс через Cloudflare Pages
+Соберите приложение:
 
-В настройках Pages нужно указать `VITE_API_URL` с адресом своего Worker
+```bash
+cd frontend
+npm ci
+npm run build
+```
 
-После публикации подключите адрес интерфейса к Telegram-боту через BotFather
+В Cloudflare откройте **Workers & Pages** и создайте проект Pages
 
-Подробную инструкцию по публикации и проверку установки с нуля ещё добавлю
+Подключите свой GitHub-репозиторий и укажите:
+
+- **Root directory:** `frontend`
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+- **Environment variable:** `VITE_API_URL` - адрес опубликованного Worker без `/api`
+
+После публикации Cloudflare выдаст HTTPS-адрес сайта
+
+### 7. Подключаем Telegram Mini App
+
+Откройте @BotFather и выберите созданного бота
+
+Через `/setmenubutton` настройте кнопку меню, указав HTTPS-адрес интерфейса из Cloudflare Pages
+
+После этого приложение можно открывать прямо из Telegram
+
+### 8. Проверяем доступ
+
+Откройте приложение через Telegram под аккаунтом, ID которого добавлен в `TELEGRAM_ALLOWED_IDS`
+
+Если API возвращает ошибку авторизации, проверьте настройки Worker и убедитесь, что приложение открыто именно через Telegram
 
 ## Доступ к данным
 
