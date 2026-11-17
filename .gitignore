@@ -1,0 +1,69 @@
+.venv/
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.db
+*.db-shm
+*.db-wal
+.env
+.DS_Store
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Databases
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Frontend
+node_modules/
+dist/
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# macOS
+.DS_Store
+
+# Cloudflare local secrets
+.dev.vars
+.dev.vars.*
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Private database backups
+*-backup.sql
+*.sql.gz
+*.sqlite.bak
+
+# Local documentation backups
+README.md.backup
+
+# Local frontend configuration
+.env.local
+.env.*.local
+
+# Personal Cloudflare configuration
+worker/wrangler.jsonc
+
+# Allow public configuration examples
+!worker/.dev.vars.example
+
+# Local test files
+worker/wrangler.test.jsonc
+worker/tests/check-auth.mjs
+
+# Old local prototype
+backend/

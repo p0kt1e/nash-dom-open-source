@@ -1,0 +1,8 @@
+# Telegram bot token from @BotFather
+TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
+
+# Allowed Telegram user IDs, separated by commas
+TELEGRAM_ALLOWED_IDS=123456789,987654321
+
+# Frontend URL (without trailing slash)
+FRONTEND_ORIGIN=http://localhost:5173
